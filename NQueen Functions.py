@@ -1,16 +1,30 @@
 import tkinter as tk
 from tkinter import ttk
 
-def is_safe(queens, row, col):
-    return all(col != c and abs(row - r) != abs(col - c) for r, c in queens)
 
-def solve_nqueens(n, row=0, queens=()):
+def is_safe(queens, row, col):
+    def not_same_column(r, c):
+        return col != c
+
+    def not_same_diagonal(r, c):
+        return abs(row - r) != abs(col - c)
+
+    def no_conflict(queen_pos):
+        r, c = queen_pos
+        return not_same_column(r, c) and not_same_diagonal(r, c)
+
+    return all(map(no_conflict, queens))
+
+
+def solve_nqueens(n, row=0, queens=(), col=0):
     if row == n:
         yield queens
+    elif col == n:
+        return
     else:
-        for col in range(n):
-            if is_safe(queens, row, col):
-                yield from solve_nqueens(n, row + 1, queens + ((row, col),))
+        if is_safe(queens, row, col):
+            yield from solve_nqueens(n, row + 1, queens + ((row, col),), 0)
+        yield from solve_nqueens(n, row, queens, col + 1)
 
 class NQueensGUI:
     def __init__(self, root):
