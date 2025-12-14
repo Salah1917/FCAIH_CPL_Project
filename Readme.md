@@ -136,10 +136,10 @@ Measured execution times for both algorithms running under identical conditions
 | 7 | < 0.1 s         | < 0.1 s          |
 | 8 | < 0.1 s         | < 0.1 s          |
 | 9 | < 0.1 s         | < 0.1 s          |
-| 10 | < 0.1 s         | < 0.1 s          |
-| 11 | < 0.2 s         | 2.4 s            |
-| 12 | 1.2 s           | 13 s             |
-| 13 | 5.8 s           | 1 min 17 s       |
+| 10 | < 0.1 s        | < 0.1 s          |
+| 11 | < 0.2 s        | 2.4 s            |
+| 12 | 1.2 s          | 13 s             |
+| 13 | 5.8 s          | 1 min 17 s       |
 
 ---
 
@@ -148,52 +148,27 @@ Measured execution times for both algorithms running under identical conditions
 - For **small board sizes (N ≤ 10)**, both approaches perform similarly and complete almost instantly.
 - Starting at **N = 11**, performance differences become significant.
 - The **imperative approach scales far better** as N increases.
-- The **declarative approach experiences exponential slowdown** due to repeated safety checks and tuple creation.
+- The **declarative approach experiences exponential slowdown** due to repeated safety checks and immutable data creation.
 
 ---
 
-### 🏁 Final Verdict
+## 🏁 Final Verdict
 
-The **imperative backtracking implementation is decisively faster** for larger N.
+The **imperative backtracking implementation is faster and more scalable** for larger N.
 
-**Why the imperative approach outperforms:**
+**Reasons:**
 - Constant-time conflict detection using sets
 - Early pruning of invalid placements
 - No repeated scanning of previous queens
-- Minimal memory allocation due to in-place state updates
+- In-place state updates with minimal memory allocation
 
-**Why the declarative approach slows down:**
-- `is_safe` checks grow linearly with the number of queens placed
-- New immutable tuples are created at each recursive step
-- Less aggressive pruning of invalid states
-
----
-
-These results clearly demonstrate how **data structure choice and state management**
-can dramatically impact performance, even when solving the same problem with the same GUI.
-
----
-
-## 🏁 Verdict
-
-### ✅ Imperative Approach is Faster
-
-**Reasons:**
-
-- Constant-time conflict checks using sets
-- No repeated scanning of previous queens
-- No tuple creation overhead
-- In-place board modification reduces memory allocation
-- More aggressive pruning of invalid paths
-
-### ⚠️ Declarative Trade-offs
-
-- Cleaner logic and readability
+**Declarative trade-offs:**
+- Cleaner, more expressive logic
 - Easier to reason about correctness
 - Slower due to:
-  - Repeated safety checks
-  - Immutable data creation
-  - Lack of early pruning structures
+  - Linear-time `is_safe` checks
+  - Tuple creation at every recursive step
+  - Less aggressive pruning
 
 ---
 
@@ -208,10 +183,9 @@ can dramatically impact performance, even when solving the same problem with the
 | Educational Value | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 
 Both approaches are valid and educational:
-- The **imperative approach** excels in performance.
+- The **imperative approach** excels in performance and scalability.
 - The **declarative approach** excels in clarity and functional design.
 
----
 
 ## 📚 Technologies Used
 
